@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Toggle Font Scale
+Comment=Toggle Font Scale
+Exec=sh -c "$HOME/.local/bin/toggle-gnome-font-scale.py"
+Icon=font_scale
+Terminal=false
+

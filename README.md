@@ -1,1 +1,1 @@
-# toggle_gnome_font_scale
+Image by <a href="/">Freeimages.com</a>

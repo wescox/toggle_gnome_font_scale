@@ -20,7 +20,7 @@ class Tray:
         # create icons for each scale
         for scale in self.scales:
             text = f"{scale}"
-            size = (96,64)
+            size = (96,64) # this is a little wide but the only way i could figure out how to make the font large enough to be clearly visible
             font_size = 36
             image = Image.new('RGBA', size, (255, 255, 255, 0))
             draw = Draw.Draw(image)
@@ -53,29 +53,6 @@ class Tray:
         
 
     def update_icon(self):
-        ## Generate an image with the given text
-        #text = f"{text}"
-        #print(text)
-        #size = (96,64)
-        ##size = (64, 64)
-        #font_size = 42
-        #image = Image.new('RGBA', size, (255, 255, 255, 0))
-        #draw = Draw.Draw(image)
-        #try:
-        #    font = Font.truetype("DejaVuSans-Bold.ttf", font_size)
-        #except IOError:
-        #    font = Font.load_default()
-        #text_size = draw.textsize(text, font=font)
-        #text_position = ((size[0] - text_size[0]) // 2, (size[1] - text_size[1]) // 2)
-        #draw.text(text_position, text, font=font, fill=(255, 255, 255, 255))
-
-        ## Save the image to a temporary file
-        #temp_icon = '/tmp/tray_icon.png'
-        #image.save(temp_icon)
-
-
-        # Set the generated image as the tray icon
-        #self.indicator.set_icon_full(temp_icon, text)
         self.get_scale()
         self.indicator.set_icon_full(f"/tmp/tray_{self.scale}_icon.png", f"{self.scale}")
 
@@ -84,9 +61,7 @@ class Tray:
         menu = gtk.Menu()
 
         # add font scales as menu options
-        #scales = [1.0, 1.25, 1.5]
         connections = {}
-        #for scale in scales:
         for scale in self.scales:
             connections[scale] = gtk.MenuItem()
             connections[scale].set_label(f"{scale}")
@@ -110,7 +85,6 @@ class Tray:
     
 
     def get_scale(self):
-        #output = subprocess.Popen(["gsettings","get","org.gnome.desktop.interface","text-scaling-factor"])
         output = subprocess.getoutput("gsettings get org.gnome.desktop.interface text-scaling-factor")
         self.scale = float(output.rstrip())
 
@@ -119,10 +93,6 @@ class Tray:
         subprocess.Popen(["gsettings","set","org.gnome.desktop.interface","text-scaling-factor", f"{scale}"])
         time.sleep(0.3)
         self.update_icon()
-        #print('a')
-        #print(self.scale)
-        #glib.timeout_add(200, self.update_icon, self.scale)
-        #print('b')
 
 
     def toggle_scale(self):
