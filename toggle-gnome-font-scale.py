@@ -2,7 +2,7 @@
 
 # credit to https://ryan.himmelwright.net/post/gnome-font-scaling-script/ for the bash script this is based on
 
-import os, gi, requests, time, signal, subprocess, re
+import os, gi, requests, time, signal, subprocess, re, sys, fcntl
 gi.require_version("Gtk", "3.0")
 gi.require_version('AppIndicator3', '0.1')
 gi.require_version('Notify', '0.7')
@@ -20,8 +20,9 @@ class Tray:
         # create icons for each scale
         for scale in self.scales:
             text = f"{scale}"
-            size = (96,64) # this is a little wide but the only way i could figure out how to make the font large enough to be clearly visible
-            font_size = 36
+            size = (64,32) # this is a little wide but the only way i could figure out how to make the font large enough to be clearly visible
+            #font_size = 36
+            font_size = 12
             image = Image.new('RGBA', size, (255, 255, 255, 0))
             draw = Draw.Draw(image)
             try:
@@ -106,12 +107,28 @@ class Tray:
     def quit(self,_):
         gtk.main_quit()
         self.listener.stop()
+        if os.path.exists(self.lockfile):
+            os.remove(self.lockfile)
     
 
 if __name__ == "__main__":
     
-    # simply so that CTRL+C works if running from CLI
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
-    
-    app = Tray()
-    gtk.main()
+    lockfile = '/tmp/toggle-gnome-font-scale.lock'
+    try:
+
+        #create lockfile
+        with open(lockfile, 'w') as lf:
+            fcntl.flock(lf, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            lf.write(str(os.getpid()))
+            lf.flush()
+
+            # simply so that CTRL+C works if running from CLI
+            signal.signal(signal.SIGINT, signal.SIG_DFL)
+            
+            app = Tray()
+            app.lockfile = lockfile
+            gtk.main()
+
+    except IOError:
+        print('App is already running')
+        sys.exit(1)
