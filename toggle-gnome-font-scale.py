@@ -29,8 +29,12 @@ class Tray:
                 font = Font.truetype("DejaVuSans-Bold.ttf", font_size)
             except IOError:
                 font = Font.load_default()
-            text_size = draw.textsize(text, font=font)
-            text_position = ((size[0] - text_size[0]) // 2, (size[1] - text_size[1]) // 2)
+            #text_width = draw.textlength(text, font=font)
+            #text_height = font.getsize(text)[1]
+            text_box = font.getbbox(text)
+            text_width = text_box[2] - text_box[0]
+            text_height = text_box[3] - text_box[1]
+            text_position = ((size[0] - text_width) // 2, (size[1] - text_height) // 2)
             draw.text(text_position, text, font=font, fill=(255, 255, 255, 255))
 
             # Save the image to a temporary file
