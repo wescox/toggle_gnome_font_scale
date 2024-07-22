@@ -2,7 +2,7 @@
 A Linux tray applet to quickly change GNOME's font scale.  GNOME does not automatically adjust scale based on monitor resolution and changing the setting in the UI is cumbersome to manage if you have a laptop and change monitors often.  You can select from a scale of 1.0 (100%), 1.25 (125%), or 1.5 (150%).  You can also cycle through scales using ctrl + shift + m.  That shortcut can be easily changed in the code.  The tray icon will update to let you know which scale you are currently using.  This app manipulates "gsettings" which is specific to GNOME, however, other DEs may have a similar command that could be easily plugged into this code.
 
 ## Credit
-This app was inspired by and largely based on a bash script posted on [ryan.himmelwright.net](https://ryan.himmelwright.net/post/gnome-font-scaling-script/).
+This app was inspired by and largely based on a bash script posted on [ryan.himmelwright.net](https://ryan.himmelwright.net/post/gnome-font-scaling-script/).  
 The icon I'm using for the app is provided by <a href="/">Freeimages.com</a>.  Feel free to change and use your own.  
 
 ## Installation
